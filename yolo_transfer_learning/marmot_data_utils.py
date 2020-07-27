@@ -1,25 +1,27 @@
-import cv2
 import glob
+import xml.etree.ElementTree as ET
+from struct import unpack
+from typing import List, Tuple
+
+import cv2
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import figure
 from PIL import Image
-import xml.etree.ElementTree as ET
-from struct import unpack
 
 
-def hex_to_double(t: str):
+def hex_to_float(t: str) -> float:
     """To get coordinate in pixel unit, divided each value in pound by 72 and multiply with 96
 
     Args:
         t: str
 
-    Returns: double
+    Returns: float
 
     """
     return (unpack("!d", bytes.fromhex(t))[0] / 72) * 96
 
 
-def get_iamge(image_path: str):
+def get_iamge(image_path: str) -> Tuple:
     """ A function to read image and get height and width.
 
     Args:
@@ -33,7 +35,7 @@ def get_iamge(image_path: str):
     return img, h, w
 
 
-def convert_label_to_str_number(label: str):
+def convert_label_to_str_number(label: str) -> str:
     """
     A function to transform label to number.
     Args:
@@ -58,7 +60,7 @@ def convert_label_to_str_number(label: str):
     return str(obj_class)
 
 
-def transform_MarmotBBox_to_YOLO(obj_class, x, y, w, h, imgw, imgh):
+def transform_MarmotBBox_to_YOLO(obj_class, x, y, w, h, imgw, imgh) -> Tuple:
     """A method to transform Marmotbbox to Yolo format.
 
     Args:
@@ -88,7 +90,7 @@ def transform_MarmotBBox_to_YOLO(obj_class, x, y, w, h, imgw, imgh):
 
 def create_training_folder(
     file_in_pos_path: str, file_in_neg_path, xml_in_path, file_out_path
-):
+) -> Tuple:
     """
     Search all the files in marmot dataset directory , call function to convert all the files and output them to a new
     directory called img.
@@ -132,7 +134,7 @@ def create_training_folder(
     return image_list, text_list, xml_list
 
 
-def write_yolo_file(image_list, text_list, xml_list):
+def write_yolo_file(image_list, text_list, xml_list) -> Tuple:
     """ A function to create a txt file that contain class data and bbox information, a specific format of Yolo model.
     It also split dataset into training and testing and return the file names in two different list.
     Assign 100 for test purposes
@@ -215,7 +217,7 @@ def write_yolo_file(image_list, text_list, xml_list):
     return train_list, test_list, data_stats
 
 
-def write_train_test(train_list, test_list, path):
+def write_train_test(train_list, test_list, path) -> None:
     """
     A function to write training and testing images names to txt files. It create one train.txt and one test.txt.
     Args:
@@ -235,7 +237,7 @@ def write_train_test(train_list, test_list, path):
     f.close()
 
 
-def return_bbox(root, label, imgh):
+def return_bbox(root, label, imgh) -> List:
     """
     A function to loop through xml files and find the bbox information of target labels.
     Args:
@@ -255,7 +257,7 @@ def return_bbox(root, label, imgh):
     return bbox_list
 
 
-def draw_pic(img_path, xml_path, label):
+def draw_pic(img_path, xml_path, label) -> None:
     """
     A function to visualize the bbox in an image.
     Args:
@@ -263,7 +265,7 @@ def draw_pic(img_path, xml_path, label):
         xml_path: str
         label: str
 
-    Returns:
+    Returns: None
 
     """
     img, imgh, imgw = get_iamge(img_path)
