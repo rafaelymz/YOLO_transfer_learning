@@ -250,7 +250,7 @@ def return_bbox(root, label, imgh) -> List:
     """
     bbox_list = []
     for table in root.findall(".//Composite[@Label='{}']".format(label)):
-        x, y, w, h = list(map(hex_to_double, table.get("BBox").split()))
+        x, y, w, h = list(map(hex_to_float, table.get("BBox").split()))
         y = imgh - y
         h = imgh - h
         bbox_list.append([x, y, w, h])
