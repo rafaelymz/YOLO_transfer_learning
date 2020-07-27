@@ -1,14 +1,15 @@
-import cv2
 import re
 import subprocess
 from glob import glob
+from os.path import join
+from typing import Dict, List, Optional
+
+import cv2
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import figure
-from os.path import join
-from typing import List, Optional
 
 
-def run_shell_script(file_name: str):
+def run_shell_script(file_name: str) -> None:
     """
     A function run *.sh script. It assumes the file is in the current directory.
     Args:
@@ -24,7 +25,7 @@ def run_shell_script(file_name: str):
         print(">>> " + line.decode().rstrip())
 
 
-def get_image_names(file_path: str):
+def get_image_names(file_path: str) -> List:
     """
     A function to read file that contain all the images and return the names in a list.
     Args:
@@ -43,7 +44,7 @@ def get_image_names(file_path: str):
     return name_list
 
 
-def get_img_index(pred_result: List):
+def get_img_index(pred_result: List) -> List:
     """
     A function to get the index of each image, so downstream function could split information accordingly.
     Args:
@@ -63,7 +64,7 @@ def get_img_index(pred_result: List):
     return img_index
 
 
-def find_bbox(pred_file_path: str, train_file_path: str):
+def find_bbox(pred_file_path: str, train_file_path: str) -> Dict:
     """
     A function to
     - Check if the number of testing images are equal to the number of prediction results.
@@ -105,7 +106,7 @@ def find_bbox(pred_file_path: str, train_file_path: str):
     return result
 
 
-def create_train_file(img_folder_path: str, train_file_path: str):
+def create_train_file(img_folder_path: str, train_file_path: str) -> None:
     """
     A function to find all the images in a directory and create a .txt file that contains all the images path in the
     target directory (train_file_path).
@@ -127,7 +128,7 @@ def create_train_file(img_folder_path: str, train_file_path: str):
     print("Training files are created in " + img_folder_path)
 
 
-def write_to_train_file(files: List, train_file_path: str):
+def write_to_train_file(files: List, train_file_path: str) -> None:
     """
     A function to create files in the targe directory.
     Args:
@@ -150,7 +151,7 @@ def write_to_train_file(files: List, train_file_path: str):
     f.close()
 
 
-def draw_pic(img_path: str, bbox: List):
+def draw_pic(img_path: str, bbox: List) -> None:
     """
     A function to visualize bbox in an image.
     Args:
@@ -173,7 +174,7 @@ def draw_pic(img_path: str, bbox: List):
     plt.show()
 
 
-def process_pred_list(pred_list: List):
+def process_pred_list(pred_list: List) -> List:
     """
     A function to convert the list of predictions to a list that contains specific data format for bbox visualization.
     Args:
@@ -194,7 +195,7 @@ def process_pred_list(pred_list: List):
     return result
 
 
-def get_bbox(meta_data: List):
+def get_bbox(meta_data: List) -> List:
     """
     A function to get the coordinates of the bbox.
     Args:
@@ -219,7 +220,7 @@ def show_pred(
     img_folder_path: str,
     confidence: Optional[float] = None,
     label: Optional[str] = None,
-):
+) -> None:
     """
     A function to visualize predicted bbox in the original images.
     Args:
